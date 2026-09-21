@@ -300,12 +300,49 @@ button {
    published URL that loads this same stylesheet and its copy div carries no
    such class, so it cannot match any of this. KEEP NEW RULES .globe-copy
    SCOPED or the frozen URL will drift. */
+/* The panel gets an explicit width and becomes a query container so the nowrap
+   headline below can be sized against the panel instead of the viewport. In the
+   iframe pages those agree, but duda-widget.html is pasted into a Duda row whose
+   column can be far narrower than the viewport, where a vw-only size would pin
+   the headline at its ceiling and overflow. An explicit width is also what makes
+   inline-size containment safe here: this element is absolutely positioned, so
+   without it the contained width would resolve to zero instead of shrink-to-fit. */
 .globe-copy {
     top: clamp(24px, min(4.2vw, 9vh), 60px) !important;
+    width: min(620px, 90%) !important;
+    container-type: inline-size !important;
+}
+
+/* The headline is two elements: the navy h1 and the purple h2 under it, with no
+   gap between them so the pair still reads as the single wrapped headline it
+   replaced. The h2 is white-space:nowrap because it must never fall to two
+   lines, and that is what caps the ceiling: "Connected by Curiosity." measures
+   13.1x its font-size in HappyDisplay SemiBold, so the 620px panel allows at
+   most 47.3px. 46px is that bound with headroom, and the h1 shares it so the
+   two lines stay one size. Do not raise it without widening .globe-copy. The
+   vw/vh terms are unchanged and stay safe under nowrap: at 4vw the line is
+   ~52vw inside a panel that is min(620px, 95vw). */
+.globe-copy h1,
+.globe-copy h2 {
+    font-size: clamp(20px, min(4vw, 8vh, 7.2cqw), 46px) !important;
+}
+
+/* The fragment is pasted into someone else's page, so the host's own h1 rules
+   can reach this element. Neutralise the ones that would move it; colour, size
+   and margin are already set above and inline. */
+.globe-copy h1 {
+    margin: 0 !important;
+    padding: 0 !important;
+    text-transform: none !important;
+    text-align: left !important;
+}
+
+.globe-copy h1::before,
+.globe-copy h1::after {
+    content: none !important;
 }
 
 .globe-copy h2 {
-    font-size: clamp(20px, min(4vw, 8vh), 52px) !important;
     margin-bottom: clamp(8px, min(1.15vw, 2.4vh), 16px) !important;
 }
 
@@ -339,7 +376,7 @@ button {
    block gives up height instead. Only font sizes are touched here, so there is
    no geometry cliff at the boundary — just a slightly faster taper. */
 @media (max-width: 1239px) {
-    .globe-copy h2 { font-size: clamp(20px, min(4vw, 5.6vh), 52px) !important; }
+    .globe-copy h1, .globe-copy h2 { font-size: clamp(20px, min(4vw, 5.6vh, 7.2cqw), 46px) !important; }
     .globe-copy > p:nth-of-type(2) { font-size: clamp(12px, min(1.35vw, 1.95vh), 18px) !important; }
     .globe-copy ul { font-size: clamp(11px, min(1.1vw, 1.65vh), 15px) !important; }
 }

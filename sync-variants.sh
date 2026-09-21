@@ -87,4 +87,30 @@ else
   status=1
 fi
 
+# The one-line headline is an invariant split across two files: the markup
+# carries white-space:nowrap, and the CSS ceiling is only safe because of it.
+# Each guard above checks its own file, so nothing ties the two together and a
+# later ceiling bump or copy edit would pass both while silently wrapping or
+# overflowing. "Connected by Curiosity." measures 13.1x its font-size in
+# HappyDisplay SemiBold, so 46px is the largest ceiling a 620px panel allows.
+if ! grep -q 'white-space:nowrap">Connected by Curiosity.</h2>' "$SRC"; then
+  echo "DRIFT  $SRC h2 lost white-space:nowrap (the CSS ceiling assumes it)" >&2
+  status=1
+fi
+# Checking one known string is not enough: a stale @media override already slipped
+# past that once. Assert instead that EVERY font-size declared for the headline is
+# container-relative and capped at 46px, whichever rule or breakpoint it sits in.
+bad_headline_rules="$(awk '
+  /^[^{]*\.globe-copy h[12]/ { headline = 1 }
+  headline && /font-size/ {
+    if ($0 !~ /7\.2cqw/ || $0 !~ /46px/) { print NR ": " $0 }
+  }
+  /}/ { headline = 0 }
+' style.css)"
+if [ -n "$bad_headline_rules" ]; then
+  echo "DRIFT  style.css headline font-size must be min(..., 7.2cqw) capped at 46px:" >&2
+  echo "$bad_headline_rules" >&2
+  status=1
+fi
+
 exit "$status"
