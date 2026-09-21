@@ -376,7 +376,7 @@ button {
    block gives up height instead. Only font sizes are touched here, so there is
    no geometry cliff at the boundary — just a slightly faster taper. */
 @media (max-width: 1239px) {
-    .globe-copy h1, .globe-copy h2 { font-size: clamp(20px, min(4vw, 5.6vh), 46px) !important; }
+    .globe-copy h1, .globe-copy h2 { font-size: clamp(20px, min(4vw, 5.6vh, 7.2cqw), 46px) !important; }
     .globe-copy > p:nth-of-type(2) { font-size: clamp(12px, min(1.35vw, 1.95vh), 18px) !important; }
     .globe-copy ul { font-size: clamp(11px, min(1.1vw, 1.65vh), 15px) !important; }
 }

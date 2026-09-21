@@ -97,8 +97,19 @@ if ! grep -q 'white-space:nowrap">Connected by Curiosity.</h2>' "$SRC"; then
   echo "DRIFT  $SRC h2 lost white-space:nowrap (the CSS ceiling assumes it)" >&2
   status=1
 fi
-if ! grep -q 'min(4vw, 8vh, 7.2cqw), 46px' style.css; then
-  echo "DRIFT  style.css headline ceiling is no longer 46px (max for a 620px panel)" >&2
+# Checking one known string is not enough: a stale @media override already slipped
+# past that once. Assert instead that EVERY font-size declared for the headline is
+# container-relative and capped at 46px, whichever rule or breakpoint it sits in.
+bad_headline_rules="$(awk '
+  /^[^{]*\.globe-copy h[12]/ { headline = 1 }
+  headline && /font-size/ {
+    if ($0 !~ /7\.2cqw/ || $0 !~ /46px/) { print NR ": " $0 }
+  }
+  /}/ { headline = 0 }
+' style.css)"
+if [ -n "$bad_headline_rules" ]; then
+  echo "DRIFT  style.css headline font-size must be min(..., 7.2cqw) capped at 46px:" >&2
+  echo "$bad_headline_rules" >&2
   status=1
 fi
 
