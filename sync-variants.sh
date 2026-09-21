@@ -87,4 +87,19 @@ else
   status=1
 fi
 
+# The one-line headline is an invariant split across two files: the markup
+# carries white-space:nowrap, and the CSS ceiling is only safe because of it.
+# Each guard above checks its own file, so nothing ties the two together and a
+# later ceiling bump or copy edit would pass both while silently wrapping or
+# overflowing. "Connected by Curiosity." measures 13.1x its font-size in
+# HappyDisplay SemiBold, so 46px is the largest ceiling a 620px panel allows.
+if ! grep -q 'white-space:nowrap">Connected by Curiosity.</h2>' "$SRC"; then
+  echo "DRIFT  $SRC h2 lost white-space:nowrap (the CSS ceiling assumes it)" >&2
+  status=1
+fi
+if ! grep -q 'min(4vw, 8vh, 7.2cqw), 46px' style.css; then
+  echo "DRIFT  style.css headline ceiling is no longer 46px (max for a 620px panel)" >&2
+  status=1
+fi
+
 exit "$status"
