@@ -313,8 +313,25 @@ button {
     top: clamp(24px, min(4.2vw, 9vh), 60px) !important;
 }
 
+/* The headline is two elements: the navy h1 and the purple h2 under it, with no
+   gap between them so the pair still reads as the single wrapped headline it
+   replaced. The h2 is white-space:nowrap because it must never fall to two
+   lines, and that is what caps the ceiling: "Connected by Curiosity." measures
+   13.1x its font-size in HappyDisplay SemiBold, so the 620px panel allows at
+   most 47.3px. 46px is that bound with headroom, and the h1 shares it so the
+   two lines stay one size. Do not raise it without widening .globe-copy. The
+   vw/vh terms are unchanged and stay safe under nowrap: at 4vw the line is
+   ~52vw inside a panel that is min(620px, 95vw). */
+.globe-copy h1,
 .globe-copy h2 {
-    font-size: clamp(20px, min(4vw, 8vh), 52px) !important;
+    font-size: clamp(20px, min(4vw, 8vh), 46px) !important;
+}
+
+.globe-copy h1 {
+    margin-bottom: 0 !important;
+}
+
+.globe-copy h2 {
     margin-bottom: clamp(8px, min(1.15vw, 2.4vh), 16px) !important;
 }
 
@@ -364,7 +381,8 @@ button {
 <div class="zc-globe-slider-host">
 <div class="globe-copy" style="position:absolute;top:60px;left:5%;max-width:620px;z-index:5;font-family:'AlmadenSans','Helvetica Neue',Arial,sans-serif;color:#0B1530;pointer-events:none">
   <p style="margin:0 0 16px;color:#2661FF;font-weight:600;font-size:20px;font-family:'AlmadenSans','Helvetica Neue',Arial,sans-serif">Join the team.</p>
-  <h2 style="margin:0 0 16px;font-family:'HappyDisplay','AlmadenSans','Helvetica Neue',Arial,sans-serif;font-weight:600;font-size:clamp(36px,4vw,52px);line-height:1.05;letter-spacing:-0.01em;color:#0B1530">Zoomies Everywhere. Connected by Curiosity.</h2>
+  <h1 style="margin:0;font-family:'HappyDisplay','AlmadenSans','Helvetica Neue',Arial,sans-serif;font-weight:600;font-size:clamp(32px,4vw,46px);line-height:1.05;letter-spacing:-0.01em;color:#0B1530">Zoomies Everywhere.</h1>
+  <h2 style="margin:0 0 16px;font-family:'HappyDisplay','AlmadenSans','Helvetica Neue',Arial,sans-serif;font-weight:600;font-size:clamp(32px,4vw,46px);line-height:1.05;letter-spacing:-0.01em;color:#9A67FB;white-space:nowrap">Connected by Curiosity.</h2>
   <p style="margin:0 0 20px;font-size:18px;line-height:1.5;color:#0B1530;font-family:'AlmadenSans','Helvetica Neue',Arial,sans-serif">Across every time zone, Zoomies are building careers that make a difference. From San Jose to Singapore, you&rsquo;ll work with curious, creative teams shaping the future of connection worldwide. Ready to explore where your career can grow next? Find your fit and apply today.</p>
   <ul style="margin:0;padding:0;list-style:none;font-size:15px;line-height:1.5;color:#0B1530;font-family:'AlmadenSans','Helvetica Neue',Arial,sans-serif">
     <li style="margin:0 0 6px"><span style="color:#2661FF;font-weight:600">North America</span> &ndash; San Jose, Denver, Boston, Kansas City</li>

@@ -304,8 +304,25 @@ button {
     top: clamp(24px, min(4.2vw, 9vh), 60px) !important;
 }
 
+/* The headline is two elements: the navy h1 and the purple h2 under it, with no
+   gap between them so the pair still reads as the single wrapped headline it
+   replaced. The h2 is white-space:nowrap because it must never fall to two
+   lines, and that is what caps the ceiling: "Connected by Curiosity." measures
+   13.1x its font-size in HappyDisplay SemiBold, so the 620px panel allows at
+   most 47.3px. 46px is that bound with headroom, and the h1 shares it so the
+   two lines stay one size. Do not raise it without widening .globe-copy. The
+   vw/vh terms are unchanged and stay safe under nowrap: at 4vw the line is
+   ~52vw inside a panel that is min(620px, 95vw). */
+.globe-copy h1,
 .globe-copy h2 {
-    font-size: clamp(20px, min(4vw, 8vh), 52px) !important;
+    font-size: clamp(20px, min(4vw, 8vh), 46px) !important;
+}
+
+.globe-copy h1 {
+    margin-bottom: 0 !important;
+}
+
+.globe-copy h2 {
     margin-bottom: clamp(8px, min(1.15vw, 2.4vh), 16px) !important;
 }
 
